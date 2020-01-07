@@ -5,7 +5,7 @@
 # 
 
 # Provide the folder where the 10x data are stored
-export RAW_DATA_PATH=${WORKING_DIR}/data/raw/DIR180504_NB501865_0090_AHM32WBGX5/10635173
+export RAW_DATA_PATH=${WORKING_DIR}/data/raw/10635173
 # Provide the path to the genome annotation file
 export GENOME_ANNOTATION_PATH=${WORKING_DIR}/data/annotation/genome/grch38/Mus_musculus.GRCm38.90.gtf
 # Provide the folder where to put the Velocyto results (loom file)

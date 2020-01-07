@@ -1,4 +1,4 @@
-#LysoDC
+# LysoDC
 
 
 THIS WORK IS IN PROGRESS
@@ -13,7 +13,7 @@ In order to prepare the environment for analysis execution you need:
 - Clone the github repository
 - Download the docker images tar file
 - Load the docker images on your system
-- Download the raw data (sequencing data)
+- Download the pre-processed data (Cell Ranger results) and the processed data (analysis results)
 - Set the WORKING_DIR environment variable
 
 ##### Download the docker images
@@ -36,9 +36,9 @@ Open a shell command, change dir to the folder in which you cloned the project a
 
 Those commands may take some time. If you encounter an issue loading some docker image layer, try again. Sometimes issue would be resolved. 
 
-##### Download the raw data
+##### Download the pre-processed data (Cell Ranger results) and the processed data (analysis results)
 
-Raw data are availbale for download on GEO. They are also available in a more convevient format on Zenodo. To dowload tem, use the following command:
+Sequencing data are available for download on GEO but ar not used here. Pre-processed data (result from Cell Ranger counts) are also available on GEO. Processed data (result of the analysis you will reproduce here) are available on Zenodo. To dowload all those data, use the following command:
 
 
 
@@ -70,16 +70,18 @@ To run the step5, you need to execute two analysis. The first one produce the lo
 
 * ensure  $WORKING_DIR/src/step5/execute_velocito.sh have execution rights by typing the following command:
 
+    
     chmod 755 $WORKING_DIR/src/step5/execute_velocito.sh
 
 * launch the docker image with the command to execute:
 
+    
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity $WORKING_DIR/src/step5/execute_velocito.sh
 
 ##### Launch Velocyto result analysis
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step5/JPGlab_LysoDC_QuinaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step5/output"), output_file = "JPGlab_LysoDC_QuinaryAnalysis.html", quiet=FALSE)'
 
-####Run step 6
+#### Run step 6
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step6/JPGlab_LysoDC_SenaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step6/output"), output_file = "JPGlab_LysoDC_SenaryAnalysis.html", quiet=FALSE)'

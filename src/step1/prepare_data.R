@@ -7,7 +7,7 @@
 
 ## @knitr load_data
 
-PATH_10x_DATA = file.path( RAW_DATA_DIR, "filtered_gene_bc_matrices", "mm10")
+PATH_10x_DATA = file.path( RAW_DATA_DIR, "10635173", "outs", "filtered_gene_bc_matrices", "mm10")
 ORIGINAL_SC10X.data <- Read10X(PATH_10x_DATA)
 ORIGINAL_SC10X <-CreateSeuratObject(raw.data = ORIGINAL_SC10X.data, min.cells = 3, min.genes = 200, project = "10X_DATA")
 
