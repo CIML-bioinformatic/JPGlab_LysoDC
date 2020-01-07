@@ -1,0 +1,128 @@
+---
+title: "LysoDC project"
+output:
+  html_document: 
+    theme: cerulean
+    toc: true
+    toc_float: true
+    toc_depth: 4
+---
+
+```{r setOptions, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+[//]: # "Load the libraries"
+```{r loadLibraries, echo=FALSE, warning=FALSE, message=FALSE}
+library( knitr)
+library( Seurat)
+library( magrittr)
+library( plyr)
+library( dplyr)
+library( DT)
+library( grid)
+
+SCRIPT_DIR = file.path( WORKING_DIR, "src/step1")
+DATA_DIR = file.path( WORKING_DIR, "data/step1")
+RAW_DATA_DIR = file.path( WORKING_DIR, "data/raw")
+OUTPUT_DIR = file.path( DATA_DIR, "output")
+dir.create( OUTPUT_DIR, showWarnings = FALSE)
+VAR_GENES_MAX_NUMBER = 100
+
+# TN,TP,DP,SP signature genes
+SIGNATURE_GENES = c(
+  "Cd24a", "Plet1", "Qpct", "Chn2", "H2-Ob", "Kmo", "AA467197", "Stap1", "Klrk1", "Klrb1b", 
+  "Gpr141", "Cytip", "F11r", "Cd72", "Ccl22", "Ifitm1","Pvrl1", "Cbfa2t3", "Trem1", "Stat4", 
+  "Pxdc1", "Lrrk2", "Adam8", "Il1b", "H2-Eb2", "Pcdh1", "Siglece", "Il1r2", "Emb", "Cd244",
+  "Lpcat4", "Nedd4", "Clec4a4", "Adgre5", "Amica1", "Btg2", "Pianp", "Ece1", "Sucnr1", "Nup210",
+  "Slc2a3", "Lmtk2", "Ciita", "Nav1", "H2-Ab1", "H2-DMb2", "Adam23", "Plxdc1", "Cd74",
+  "H2-Eb1", "H2-Aa"
+)
+
+# Genes related to proliferation
+GENE_LIST_PROLIFERATION = c( "Ccnb1", "Ccnb2", "Ccna2", "Cdc20", "Plk1", "Ube2c", "Cenpf", "Cenpa", "Aurka", "Mki67")
+
+# Genes expressed by puttative contaminating cells
+CONTAMINATION_GENES = c("Cd19", "Mzb1")
+
+MONITORED_GENES = c( CONTAMINATION_GENES, GENE_LIST_PROLIFERATION, SIGNATURE_GENES)
+```
+
+[//]: # "Load the various chunks in the various files"
+```{r readChunks, echo=FALSE, warning=FALSE, message=FALSE}
+read_chunk( path=file.path( SCRIPT_DIR, "all_functions.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "prepare_data.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "analysis_variable_genes.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "analysis_cell_heterogeneity.R"))
+```
+
+[//]: # "Load all the required functions"
+```{r loadFunctions, echo=FALSE, message=FALSE}
+<<load_functions>>
+```  
+
+## Primary analysis on SC data
+
+### Load of data
+```{r loadingData, results='asis', echo=FALSE}
+<<load_data>>
+```  
+
+### Quality Controls, filtering and normalization
+```{r filteringData, results='asis', echo=FALSE}
+<<filtering_data>>
+<<normalizing_data>>
+```
+
+### Variables gene analysis
+
+```{r findingVariableGenes, results='asis', echo=FALSE}
+sc10x=NORMALIZED_FILTERED_SC10X
+<<find_variable_genes_seurat_method>>
+```
+
+### Cell heterogeneity analysis
+
+```{r heterogeneityAnalysisAllPopulations, results='asis', echo=FALSE}
+<<heterogeneity_analysis_by_pca>>
+```
+
+### Elimination of sub-populations
+
+In this analysis we will write to file not wanted cells in order to have
+them removed from future analyses.
+
+Cells in cluster 4 were analyzed as proliferative cells.
+
+Cells in cluster 5 were analyzed as contiminating cells.
+
+```{r removingMinoritySubPopulation, results='asis', echo=FALSE}
+
+# Identify the cells to remove because they are proliferative cells
+cell_to_remove_proliferation = colnames(sc10x@data)[ sc10x@ident == 4]
+cat("<BR>Number of cells considered as proliferative:", length( cell_to_remove_proliferation))
+cat("<BR>Their identities will be stored in file 'excluded_cells_proliferation.txt'.")
+write.table( data.frame( cellid = cell_to_remove_proliferation), file=file.path( OUTPUT_DIR, "excluded_cells_proliferation.txt"), quote = FALSE, col.names = TRUE, row.names = FALSE, sep="\t")
+
+# Identify the cells to remove because they are contamination cells
+cell_to_remove_contamination = colnames( sc10x@data)[ sc10x@ident == 5]
+cat("<BR>Number of cells considered as contamination:", length( cell_to_remove_contamination))
+cat("<BR>Their identities will be stored in file 'excluded_cells_contamination.txt'.")
+write.table( data.frame( cellid = cell_to_remove_contamination), file=file.path( OUTPUT_DIR, "excluded_cells_contamination.txt"), quote = FALSE, col.names = TRUE, row.names = FALSE, sep="\t")
+
+# Identify the cells to keep and export the filtered raw expression table to file
+cell_to_keep = colnames( sc10x@data)[ sc10x@ident %in% c(0,1,2,3)]
+cat("<BR>Number of cells to keep:", length( cell_to_keep))
+
+# Export raw expression matrix with only kept cells to file
+df_raw_to_export = as.data.frame( as.matrix( sc10x@raw.data))[ , cell_to_keep]
+cat("<BR>Raw expression matrix with only kept cells will be stored in file 'filtered_raw_expression_matrix.csv'")
+write.table( df_raw_to_export, file = file.path( OUTPUT_DIR, "filtered_raw_expression_matrix.csv"), quote = FALSE, col.names = TRUE, row.names = TRUE, sep="\t")
+
+# Export normalized expression matrix with only kept cells to file
+df_norm_to_export = as.data.frame( as.matrix( sc10x@data))[ , cell_to_keep]
+cat("<BR>Normalized expression matrix with only kept cells will be stored in file 'filtered_normalized_expression_matrix.csv'")
+write.table( df_norm_to_export, file = file.path( OUTPUT_DIR, "filtered_normalized_expression_matrix.csv"), quote = FALSE, col.names = TRUE, row.names = TRUE, sep="\t")
+
+
+```

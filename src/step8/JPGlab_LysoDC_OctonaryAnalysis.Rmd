@@ -1,0 +1,88 @@
+---
+title: "LysoDC project - Octonary analysis - Analysis with Monocle"
+output:
+  html_document: 
+    theme: cerulean
+    toc: true
+    toc_float: false
+    toc_depth: 4
+  pdf_document: default
+---
+
+[//]: # "Global documentation on Monocle can be found on:" 
+[//]: # "http://cole-trapnell-lab.github.io/monocle-release/docs/"
+
+
+```{r setOptions, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE, fig.keep="all")
+```
+
+[//]: # "Load the libraries"
+```{r loadLibraries, echo=FALSE, warning=FALSE, message=FALSE}
+library( knitr)
+library( monocle)
+library( ggplot2)
+library( reshape2)
+library( magrittr)
+library( plyr)
+library( dplyr)
+library( DT)
+library( grid)
+library( pagoda2)
+library( d3heatmap)
+```
+
+[//]: # "Define some constants"
+```{r defineConstants, echo=FALSE, warning=FALSE, message=FALSE}
+WORKING_DIR=Sys.getenv( "WORKING_DIR")
+
+SCRIPT_DIR = file.path( WORKING_DIR, "src/step8")
+DATA_DIR = file.path( WORKING_DIR, "data/step8")
+INPUT_DIR = file.path( DATA_DIR, "input")
+OUTPUT_DIR = file.path( DATA_DIR, "output")
+dir.create( OUTPUT_DIR, showWarnings = FALSE)
+```
+
+[//]: # "Load the various chunks in the various files"
+```{r readChunks, echo=FALSE, warning=FALSE, message=FALSE}
+read_chunk( path=file.path( SCRIPT_DIR, "prepare_data.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "analysis_classify_cells.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "analysis_pseudotime.R"))
+```
+
+## Single-cell Analysis with Monocle
+
+### Loading and building data
+In this section, we load the data, normalize them using the Monocle size factor method, identify genes expressed by a minimum of cells and look at the expression of those genes. 
+```{r loadingData, fig.keep="all", results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+<<load_data>>
+<<build_data>>
+<<filter_data>>
+```  
+
+### Classifying cells by type using markers
+Monocle provides a simple system for tagging cells based on the expression of marker genes of your choosing. You simply provide a set of functions that Monocle can use to annotate each cell. For example, you could provide a function for each of several cell types. These functions accept as input the expression data for each cell, and return TRUE to tell Monocle that a cell meets the criteria defined by the function. So you could have one function that returns TRUE for cells that express myoblast-specific genes, another function for fibroblast-specific genes, etc. 
+
+```{r classifyCellsByType, fig.keep="all", results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+<<classify_cells_by_type>>
+```  
+
+### Clustering cells with with markers
+First, we'll select a different set of genes to use for clustering the cells. Before we just picked genes that were highly expressed and highly variable. Now, we'll pick genes that co-vary with our markers. In a sense, we'll be building a large list of genes to use as markers.
+
+```{r classifyCellsWithMarkers, fig.keep="all", results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+<<classify_cells_with_markers>>
+```  
+
+### Pseudo time analysis
+
+Here we will apply the pseudo-time analysis from Monocle using the data from the "with markers" analysis and the 100 best markers.
+
+```{r choosePseudotimeContext, echo=TRUE, warning=FALSE, message=FALSE}
+filtered_cds_for_pseudotime = filtered_cds_cell_type
+signature_genes_for_pseudotime =  unique( selectTopMarkers( marker_spec, 100)$gene_id)
+```  
+
+```{r pseudotimeAnalysis, fig.keep="all", results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+<<pseudotime_analysis>>
+```  

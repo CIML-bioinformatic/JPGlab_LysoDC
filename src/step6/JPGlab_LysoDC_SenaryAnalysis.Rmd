@@ -1,0 +1,108 @@
+---
+title: "LysoDC project - Senary analysis - Analysis with RNA Velocity on filtered cells"
+output:
+  html_document: 
+    theme: cerulean
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  pdf_document: default
+---
+
+[//]: # "Global documentation on Velocyto can be found on:" 
+[//]: # "http://velocyto.org/"
+[//]: # "For R Analysis of Velocyto results : http://pklab.med.harvard.edu/velocyto/notebooks/R/DG1.nb.html"
+
+
+```{r setOptions, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+[//]: # "Load the libraries"
+```{r loadLibraries, echo=FALSE, warning=FALSE, message=FALSE}
+library( knitr)
+library( ggplot2)
+library( reshape2)
+library( magrittr)
+library( plyr)
+library( dplyr)
+library( DT)
+
+library( velocyto.R)
+library( igraph)
+library( pagoda2)
+
+WORKING_DIR=Sys.getenv( "WORKING_DIR")
+
+SCRIPT_DIR = file.path( WORKING_DIR, "src/step6")
+DATA_DIR = file.path( WORKING_DIR, "data/step6")
+INPUT_DIR = file.path( DATA_DIR, "input")
+OUTPUT_DIR = file.path( DATA_DIR, "output")
+VELOCYTO_INPUT_DIR = INPUT_DIR
+
+dir.create( OUTPUT_DIR, showWarnings = FALSE)
+
+CLUSTER_TO_REMOVE = c( 6, 7, 9)
+```
+
+[//]: # "Load the various chunks in the various files"
+```{r readChunks, echo=FALSE, warning=FALSE, message=FALSE}
+read_chunk( path=file.path( SCRIPT_DIR, "prepare_filter_cells.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "analysis_filtered_velocity_estimation.R"))
+```
+
+# Single-cell Analysis with Velocyto
+
+## Filtered Analysis
+
+In this analysis we take advantage of QC results and cluster analysis to keep
+only high importance cells. We then analyze the Velocyto result on those cells
+only.
+
+Since some analysis may not be exactly reproducible from run to run once
+all analysis done, we save the R objects produced by the analysis file in
+order to freeze those results and reuse them in successive analysis.
+
+#### Filtering and building data
+In this section, we filter the data by removing undesired cells, prepare them using Pagoda2, 
+cluster the cells and show some t-SNE plots with clusters and markers genes. 
+
+We also compute the differentially expressed genes and show them on a heatmap with clusters.
+
+```{r filterData, results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+<<filter_data>>
+<<build_filtered_data>>
+```  
+
+### Velocity estimation (filtered)
+
+In this section we use the result of the Velocyto process to produce a map of
+selected cells velocity on a t-SNE embedding and look at some genes RNA
+spliced/unspliced evolution.
+
+```{r estimateFilteredVelocity, results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+<<estimate_filtered_velocity>>
+```  
+
+### Export cells clusters mapping and pagoda/velocyto objects
+
+In this section, we export the mapping of selected cells to cluster in an text
+file. We also export the Pagoda object, filtered expression spliced and
+unspliced matrices and the velocyto object.
+
+```{r exportClusterMapping, results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+# Export the cell cluster mapping
+mapping_file = file.path( OUTPUT_DIR, "cell_cluster_mapping.tsv")
+cat("<BR>Exporting cell to cluster mapping to file:")
+cat("<BR> ", mapping_file)
+export_df = data.frame( cell.id = names( r_filtered$clusters[[ "PCA"]]$multilevel),
+                        cluster.number = r_filtered$clusters[[ "PCA"]]$multilevel)
+write.table( export_df, file = mapping_file, sep="\t", row.names =TRUE, col.names = TRUE, quote=FALSE)
+
+# Export the pagoda object with clusters and t_SNE embedding
+saveRDS( r_filtered, file.path( OUTPUT_DIR, "r_filtered.rds"))
+saveRDS( filtered_emat, file.path( OUTPUT_DIR, "filtered_emat.rds"))
+saveRDS( filtered_nmat, file.path( OUTPUT_DIR, "filtered_nmat.rds"))
+saveRDS( rvel.cd, file.path( OUTPUT_DIR, "rvel.cd.rds"))
+```  
+

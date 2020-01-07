@@ -1,0 +1,95 @@
+---
+title: "LysoDC project - Quinary analysis - Analysis with RNA Velocity"
+output:
+  html_document: 
+    theme: cerulean
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  pdf_document: default
+---
+
+[//]: # "Global documentation on Velocyto can be found on:" 
+[//]: # "http://velocyto.org/"
+[//]: # "For R Analysis of Velocyto results : http://pklab.med.harvard.edu/velocyto/notebooks/R/DG1.nb.html"
+
+
+```{r setOptions, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+[//]: # "Load the libraries"
+```{r loadLibraries, echo=FALSE, warning=FALSE, message=FALSE}
+library( knitr)
+library( ggplot2)
+library( reshape2)
+library( magrittr)
+library( plyr)
+library( dplyr)
+library( DT)
+library( velocyto.R)
+library( igraph)
+library( pagoda2)
+
+WORKING_DIR=Sys.getenv( "WORKING_DIR")
+
+SCRIPT_DIR = file.path( WORKING_DIR, "src/step5")
+DATA_DIR = file.path( WORKING_DIR, "data/step5")
+INPUT_DIR = file.path( DATA_DIR, "input")
+OUTPUT_DIR = file.path( DATA_DIR, "output")
+VELOCYTO_INPUT_DIR = OUTPUT_DIR
+dir.create( OUTPUT_DIR, showWarnings = FALSE)
+```
+
+[//]: # "Load the various chunks in the various files"
+```{r readChunks, echo=FALSE, warning=FALSE, message=FALSE}
+read_chunk( path=file.path( SCRIPT_DIR, "prepare_data.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "analysis_velocity_estimation.R"))
+```
+
+# Single-cell Analysis with Velocyto
+
+## Raw Analysis
+
+In this analysis we use the result of the Velocyto process as is, without
+filtering any cells. In the next analysis step (Senary) we will take advantage
+of QC results and cluster analysis to keep only high importance cells.
+
+#### Loading and building data
+In this section, we load the data, prepare them using Pagoda2, cluster the cells 
+and show some t-SNE plots with clusters and markers genes. 
+
+We also compute the differentially expressed genes and show them on a heatmap with clusters.
+
+```{r loadingData, results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+<<load_data>>
+<<build_data>>
+```  
+
+### Velocity estimation
+
+In this section we use the result of the Velocyto process to produce a map of
+cell velocity on a t-SNE embedding and look at some genes RNA
+spliced/unspliced evolution.
+
+ ```{r estimateVelocity, results='asis',echo=FALSE, warning=FALSE, message=FALSE} 
+<<estimate_velocity>>
+```  
+
+### Export cells clusters
+
+In this section, we export the mapping of cells to cluster in an text file. 
+This file will be used in the Senary analysis to remove cells fron undesired clusters.
+
+It is important to note that cluster order should not be the same from run to
+run. Exporting this result will allow to freeze the results for further
+analysis.
+
+```{r exportClusterMapping, results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+mapping_file = file.path( OUTPUT_DIR, "cell_cluster_mapping.tsv")
+cat("<BR>Exporting cell to cluster mapping to file:")
+cat("<BR> ", mapping_file)
+export_df = data.frame( cell.id = names( r$clusters[[ "PCA"]]$multilevel),
+                        cluster.number = r$clusters[[ "PCA"]]$multilevel)
+write.table( export_df, file = mapping_file, sep="\t", row.names =TRUE, col.names = TRUE, quote=FALSE)
+```  

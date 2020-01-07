@@ -1,0 +1,87 @@
+---
+title: "LysoDC project - Septenary analysis - Refinement of Velocity analysis"
+output:
+  html_document: 
+    theme: cerulean
+    toc: true
+    toc_float: true
+    toc_depth: 4
+  pdf_document: default
+---
+
+[//]: # "Global documentation on Velocyto can be found on:" 
+[//]: # "http://velocyto.org/"
+[//]: # "For R Analysis of Velocyto results : http://pklab.med.harvard.edu/velocyto/notebooks/R/DG1.nb.html"
+[//]: # R -e "library( knitr);rmarkdown::render('JPGlab_LysoDC_SeptenaryAnalysis.Rmd')"
+
+
+```{r setOptions, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+[//]: # "Load the libraries"
+```{r loadLibraries, echo=FALSE, warning=FALSE, message=FALSE}
+library( knitr)
+library( ggplot2)
+library( reshape2)
+library( magrittr)
+library( plyr)
+library( dplyr)
+library( DT)
+
+library( velocyto.R)
+library( igraph)
+library( pagoda2)
+library( Seurat)
+library( cluster)
+
+WORKING_DIR=Sys.getenv( "WORKING_DIR")
+
+SCRIPT_DIR = file.path( WORKING_DIR, "src/step7")
+DATA_DIR = file.path( WORKING_DIR, "data/step7")
+INPUT_DIR = file.path( DATA_DIR, "input")
+OUTPUT_DIR = file.path( DATA_DIR, "output")
+VELOCYTO_INPUT_DIR = INPUT_DIR
+
+dir.create( OUTPUT_DIR, showWarnings = FALSE)
+```
+
+[//]: # "Load the various chunks in the various files"
+```{r readChunks, echo=FALSE, warning=FALSE, message=FALSE}
+read_chunk( path=file.path( SCRIPT_DIR, "prepare_reload_data.R"))
+read_chunk( path=file.path( SCRIPT_DIR, "analysis_improve_rnavelocity_plot.R"))
+```
+
+```{r loadAllFunctions, echo=FALSE, warning=FALSE, message=FALSE}
+<<load_all_functions>>
+```
+
+# Loading data from previous analysis
+
+In this section, we load the R objects produced by the Senary analysis (step6)
+in order to get exactly the same data for further analysis and plotting.
+```{r reloadData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+<<reload_data>>
+```
+
+# Refinement of analysis done with Velocyto
+
+## Improve RNA velocity resulting plots
+
+In this section we simply apply new parameters for RNA velocity resulting plots in order to have
+a better visual result.
+```{r improveRnavelocityPlot, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+<<improve_rnavelocity_plot>>
+```
+
+## Analyze bassins of emission and attractions
+
+In this section we try to identifu the cells that are in bassins of emission
+(cells that are progenitor) and cells that are in bassins of attraction (cells
+that are in terminal differentiation state).
+
+```{r analyzeVelocityBassins,
+echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+<<analyze_velocity_bassins>>
+```
+
