@@ -54,6 +54,8 @@ Those commands may take some time. If you encounter an issue loading some docker
 
 Sequencing data are available for download on GEO but are not used here. Pre-processed data (result from Cell Ranger counts) are also available on GEO. Annotation data and processed data (result of the analysis you will reproduce here) are available on Zenodo. In order to simplify the procedure, required data to reproduce the analysis have been packaged on the Zenodo repository. To dowload all those data, use the following command:
 
+---
+---
 
 ## Run the analysis
 
@@ -61,6 +63,8 @@ Analysis can be directly run inside docker containers by compiling Rmarkdown fil
 and produce a final HTML report. 
 
 Each step report will be generated in the <WORKING_DIR>/data/step<X>/output where <WORKING_DIR> is the folder where you clone the git repository (and set the WORKING_DIR environment variable) and <X> is the number of the analysis step you are executing (1 or 5 to 8).
+
+---
 
 ### Run step 1
 
@@ -91,6 +95,7 @@ Once the analysis done, here is the tree the WORKING_DIR/data/step1 folder you m
         ├── filtered_raw_expression_matrix.csv          # The matrix of raw gene expression (UMI counts)
         └── JPGlab_LysoDC_PrimaryAnalysis.html          # The HTML report of the analysis
 
+---
 
 ### Run step 5
 
@@ -119,7 +124,7 @@ Since we use these clusters to identify new series of cells that we remove from 
 #### Execution 
 To run the step5, you need to execute two analysis. The first one produce the loom file containing the information about spliced and unspliced RNA. It is a python script provided by Velocyto. The second analysis takes this loom file as input and produces the RNA velocity analysis as an HTML report.
 
-** 1. Launch Velocyto to produce the loom file**
+**_1. Launch Velocyto to produce the loom file of spliced/unspliced RNA counts_**
 
 First ensure the script $WORKING_DIR/src/step5/execute_velocito.sh have execution rights by typing the following command:
 
@@ -131,7 +136,7 @@ Then launch the Velocyto tool inside the suitable Docker image with the command:
 
 Important note: This step is computationally intensive : the process will, at some steps, use all the available CPU and memory usage may exceed 30GB RAM.
 
-** 2. Launch Velocyto result analysis**
+**_2. Launch Velocyto result R analysis_**
 
 Once the loom file has been produced by the previous command, ensure that the other input files are correctly copied into the $WORKING_DIR/data/step5/input folder (see above) and launch the following command:
 
@@ -152,11 +157,13 @@ Once the analysis done, here is the tree the $WORKING_DIR/data/step5 folder you 
         ├── cell_cluster_mapping.tsv             # The association of cells to clusters
         └── JPGlab_LysoDC_QuinaryAnalysis.html   # The analysis report
 
+---
 
 ### Run step 6
 
 #### Goal
-This step aims to produce a more focus analysis of the RNA velocity. Cells analyzed in the previous step as contamination or not suitale for analysis thanks to the marker genes of the cluster they are part of are eliminated, providing a clearer view of the serached processes.
+This step aims to produce a more focus analysis of the RNA velocity. Cells analyzed in the previous step as contamination or not suitale for analysis thanks to the marker genes of the cluster they are part of are eliminated, providing a clearer view of the serached processes. In this step, we concentrate on the velocyto output analysis,
+looking in details at some key genes, trying several combination of Velocyto parameters to make the mapping of relative velocyto of cells on the t-SNE embedding clearer.
 
 #### Input
 This step use input from previous analysis. Here is a tree presentation of the content of the folder $WORKING_DIR/data/step6 as it should be before the execution of the analysis.
@@ -172,7 +179,7 @@ This step use input from previous analysis. Here is a tree presentation of the c
         └── excluded_cells_proliferation.txt      # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_proliferation.txt
 
 #### Output
-This step output a new cluster mapping file, done once cells have been filtered and using the Pagoda2 package and the _makeKnnGraph_ function (on PCA space) and the _getKnnClusters_ using the 'walktrap' method. It also ouput binary file (RDS format) containing the R objects produced by the velocyto analysis (spliced and unspliced matrix counts and relative velocity estimations) and the pagoda2 analysis.
+This step output a new cluster mapping file, done once cells have been filtered and using the Pagoda2 package and the _makeKnnGraph_ function (on PCA space) and the _getKnnClusters_ using the 'walktrap' method. It also ouput binary files (RDS format) containing the R objects produced by the velocyto analysis (spliced and unspliced matrix counts and relative velocity estimations) and the pagoda2 analysis.
 
 We chose to export the complete R objects of this analysis in order to keep fixed some information that may vary from run to run (for instance t-SNE embedding). Those
 objects will be resued in the next steps as input files.
@@ -204,10 +211,32 @@ Once the analysis done, here is the tree the WORKING_DIR/data/step6 folder you m
         ├── r_filtered.rds                      # The pagoda2 object with the counts, clusters and t-SNE informations
         └── rvel.cd.rds                         # the Velocyto object with the computed relative velocity estimation of cells
 
+---
 
 ### Run step 7
 
+#### Goal
+
+
+#### Input
+This step use input from previous analysis. Here is a tree presentation of the content of the folder $WORKING_DIR/data/step7 as it should be before the execution of the analysis. Note that the file "cell_cluster_mapping.tsv" is the on from step6 output NOT the one from step5 output.
+
+    step7
+    └── input
+        ├── cell_cluster_mapping.tsv  # this file must be a copy from $WORKING_DIR/data/step6/output/cell_cluster_mapping.tsv
+        ├── filtered_emat.rds         # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_emat.rds
+        ├── filtered_nmat.rds         # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_nmat.rds
+        ├── r_filtered.rds            # this file must be a copy from $WORKING_DIR/data/step6/output/r_filtered.rds
+        └── rvel.cd.rds               # this file must be a copy from $WORKING_DIR/data/step6/output/rvel.cd.rds
+
+
+#### Output
+
+#### Execution
+
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step7/JPGlab_LysoDC_SeptenaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step7/output"), output_file = "JPGlab_LysoDC_SeptenaryAnalysis.html", quiet=FALSE)'
+
+#### Results
 
 ### Run step 8
 
