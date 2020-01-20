@@ -62,19 +62,19 @@ and produce a final HTML report.
 
 Each step report will be generated in the <WORKING_DIR>/data/step<X>/output where <WORKING_DIR> is the folder where you clone the git repository (and set the WORKING_DIR environment variable) and <X> is the number of the analysis step you are executing (1 or 5 to 8).
 
-##### Run step 1
+#### Run step 1
 
-$Goal:$ This step is a standard quality control and first analysis of the cell heterogeneity. 
+**Goal:** This step is a standard quality control and first analysis of the cell heterogeneity. 
 
-$Output:$ This step output files that contain cellular barcodes associated to cell do not passing
+**Output:** This step output files that contain cellular barcodes associated to cell do not passing
 one of the QC test. It also output two matrices of gene expression o,e with the raw UMI counts, and one with the normalized UMI counts. 
 Finally, it output the HTML report of the analysis.
 
-$Execution:$ To run the step1, ensure you have correctly downloaded the data in the folder <WORKING_DIR>/data/raw and run the following command:
+**Execution:** To run the step1, ensure you have correctly downloaded the data in the folder <WORKING_DIR>/data/raw and run the following command:
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_seurat R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step1/JPGlab_LysoDC_PrimaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step1/output"), output_file = "JPGlab_LysoDC_PrimaryAnalysis.html", quiet=FALSE)'
 
-$Results:$ One the analysis done, here is the tree the $WORKING_DIT/data/step1 folder you may obtain:
+**Results:** One the analysis done, here is the tree the $WORKING_DIT/data/step1 folder you may obtain:
 
     step1
     └── output
@@ -88,11 +88,11 @@ $Results:$ One the analysis done, here is the tree the $WORKING_DIT/data/step1 f
         └── JPGlab_LysoDC_PrimaryAnalysis.html          # The HTML report of the analysis
 
 
-##### Run step 5
+#### Run step 5
 
-$Goal:$ This step aims to produce a first version of the RNA velocity analysis of the data. Thi sstep is also used to identify cell considered as contamination or "in dying" state. These cells are removed from the analysis to improve the quality of the next steps.
+**Goal:** This step aims to produce a first version of the RNA velocity analysis of the data. Thi sstep is also used to identify cell considered as contamination or "in dying" state. These cells are removed from the analysis to improve the quality of the next steps.
 
-$Input:$ This step use input from previous analysis. Here is a tree présentation of the content of the folder $WORKING_DIR/data/step5 as it should be before the execution
+**Input:** This step use input from previous analysis. Here is a tree présentation of the content of the folder $WORKING_DIR/data/step5 as it should be before the execution
 of the analysis.
 
     step5
@@ -103,9 +103,9 @@ of the analysis.
         ├── excluded_cells_LowUMINb.txt         #(this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowUMINb.txt)
         └── excluded_cells_proliferation.txt    #(this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_proliferation.txt)
 
-$Execution: $To run the step5, you need to execute two analysis. The first one produce the loom file containing the information about spliced and unspliced RNA. It is a python script provided by Velocyto. The second analysis takes this loom file as input and produces the RNA velocity analysis as an HTML report.
+**Execution:** To run the step5, you need to execute two analysis. The first one produce the loom file containing the information about spliced and unspliced RNA. It is a python script provided by Velocyto. The second analysis takes this loom file as input and produces the RNA velocity analysis as an HTML report.
 
-$_ 1. Launch Velocyto to produce the loom file_$
+##### 1. Launch Velocyto to produce the loom file
 
 First ensure the script $WORKING_DIR/src/step5/execute_velocito.sh have execution rights by typing the following command:
 
@@ -115,15 +115,15 @@ Then launch the Velocyto tool inside the suitable Docker image with the command:
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity $WORKING_DIR/src/step5/execute_velocito.sh
 
-*Important note*: This step is computationally intensive : the process will at some steps uses all the available CPU and memory usage will exceed 30GB RAM.
+**Important note:** This step is computationally intensive : the process will at some steps uses all the available CPU and memory usage will exceed 30GB RAM.
 
-$_ 2. Launch Velocyto result analysis_$
+##### 2. Launch Velocyto result analysis
 
 Once the loom file has been produced by the previous command, launch the following command to produce the analysis report on RNA velocity:
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step5/JPGlab_LysoDC_QuinaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step5/output"), output_file = "JPGlab_LysoDC_QuinaryAnalysis.html", quiet=FALSE)'
 
-$Output:$ One the analysis done, here is the tree the $WORKING_DIT/data/step5 folder you may obtain:
+**Output:** One the analysis done, here is the tree the $WORKING_DIT/data/step5 folder you may obtain:
 
     step5
     ├── input
@@ -145,9 +145,9 @@ Since we use this cluster to identify new series of cells that we remove from an
 
 #### Run step 6
 
-$Goal:$ This step aims to produce a more focus analysis of the RNA velocity. Cells analyzed in the previous step as contamination or not suitale for analysis thanks to the marker genes of the cluster they are part of are eliminated, providing a clearer view of the serached processes.
+**Goal:** This step aims to produce a more focus analysis of the RNA velocity. Cells analyzed in the previous step as contamination or not suitale for analysis thanks to the marker genes of the cluster they are part of are eliminated, providing a clearer view of the serached processes.
 
-$Input:$ 
+**Input:**
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step6/JPGlab_LysoDC_SenaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step6/output"), output_file = "JPGlab_LysoDC_SenaryAnalysis.html", quiet=FALSE)'
 
