@@ -64,7 +64,21 @@ Each step report will be generated in the <WORKING_DIR>/data/step<X>/output wher
 
 ##### Run step 1
 
-This step is a standard quality control and first analysis of the cell heterogeneity. 
+This step is a standard quality control and first analysis of the cell heterogeneity. This step output files that contain cellular barcodes associated to cell do not passing
+one of the QC test. It also output two matrices of gene expression o,e with the raw UMI counts, and one with the normalized UMI counts. 
+Finally, it output the HTML report of the analysis.
+
+    step1
+    └── output
+        ├── excluded_cells_contamination.txt
+        ├── excluded_cells_HighMitoGenePerc.txt
+        ├── excluded_cells_LowGeneNb.txt
+        ├── excluded_cells_LowUMINb.txt
+        ├── excluded_cells_proliferation.txt
+        ├── filtered_normalized_expression_matrix.csv
+        ├── filtered_raw_expression_matrix.csv
+        └── JPGlab_LysoDC_PrimaryAnalysis.html
+
 
 To run the step1, ensure you have correctly downloaded the data in the folder <WORKING_DIR>/data/raw and run the following command:
 
