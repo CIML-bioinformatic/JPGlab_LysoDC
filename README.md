@@ -179,13 +179,15 @@ This step use input from previous analysis. Here is a tree presentation of the c
         └── excluded_cells_proliferation.txt      # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_proliferation.txt
 
 #### Output
-This step output a new cluster mapping file, done once cells have been filtered and using the Pagoda2 package and the _makeKnnGraph_ function (on PCA space) and the _getKnnClusters_ using the 'walktrap' method. It also ouput binary files (RDS format) containing the R objects produced by the velocyto analysis (spliced and unspliced matrix counts and relative velocity estimations) and the pagoda2 analysis.
+This step output a new cluster mapping file, done once cells have been filtered. It also ouput binary files (RDS format) containing the R objects produced by the velocyto analysis (spliced and unspliced matrix counts and relative velocity estimations) and the pagoda2 analysis.
 
 We chose to export the complete R objects of this analysis in order to keep fixed some information that may vary from run to run (for instance t-SNE embedding). Those
 objects will be resued in the next steps as input files.
 
+**Important note:**  In this step the cluster is performed with the pagoda2 package and the _makeKnnGraph_ function (on PCA space) and the _getKnnClusters_ using the 'walktrap' method. This method using a random walk procedure can generate differences when re-running the clustering compare to our run. To allow reproducibility of our results, we provide the cluster/cell assignation table in an output file (see below).   
+
 #### Execution
-To execute the analysis, ensure input files are correctly copied into the $WORKING_DIR/data/step5/input folder (see above) and launch the following command:
+To execute the analysis, ensure input files are correctly copied into the $WORKING_DIR/data/step6/input folder (see above) and launch the following command:
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step6/JPGlab_LysoDC_SenaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step6/output"), output_file = "JPGlab_LysoDC_SenaryAnalysis.html", quiet=FALSE)'
     
@@ -216,7 +218,9 @@ Once the analysis done, here is the tree the WORKING_DIR/data/step6 folder you m
 ### Run step 7
 
 #### Goal
-
+This step aims at comparing the expression level of key genes and the flows of cells relative estimate velocities in order to decipher the differentiation steps.
+This study allowed us to define sepcific zone in the t-SNE embedding, called _bassins_, corresponding to zones where the flow of velocities goes out (emission bassin) 
+or goes in (attraction bassin (see article).
 
 #### Input
 This step use input from previous analysis. Here is a tree presentation of the content of the folder $WORKING_DIR/data/step7 as it should be before the execution of the analysis. Note that the file "cell_cluster_mapping.tsv" is the on from step6 output NOT the one from step5 output.
@@ -229,18 +233,79 @@ This step use input from previous analysis. Here is a tree presentation of the c
         ├── r_filtered.rds            # this file must be a copy from $WORKING_DIR/data/step6/output/r_filtered.rds
         └── rvel.cd.rds               # this file must be a copy from $WORKING_DIR/data/step6/output/rvel.cd.rds
 
-
 #### Output
+This step produces files of the list of marker genes for each bassin and the list of cell barcode associated to each bassin. It also produces a report in HTML format.
 
 #### Execution
+To execute the analysis, ensure input files are correctly copied into the $WORKING_DIR/data/step7/input folder (see above) and launch the following command:
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step7/JPGlab_LysoDC_SeptenaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step7/output"), output_file = "JPGlab_LysoDC_SeptenaryAnalysis.html", quiet=FALSE)'
 
 #### Results
+Once the analysis done, here is the tree the WORKING_DIR/data/step7 folder you may obtain (with the newly created "output" folder):
+
+    step7
+    ├── input
+    │   ├── cell_cluster_mapping.tsv  
+    │   ├── filtered_emat.rds         
+    │   ├── filtered_nmat.rds         
+    │   ├── r_filtered.rds            
+    │   └── rvel.cd.rds               
+    └── output
+        ├── basins_markers.csv                # Markers genes of bassins of attraction and emission
+        ├── cells_in_basins.tsv               # List of cells barcodes in each bassin
+        └── JPGlab_LysoDC_SeptenaryAnalysis   # the HTML report of the analysis
+
+---
 
 ### Run step 8
 
+#### Goal
+This step produces a pseudotime analysis of the data using Monocle2. The study infer the cell type (SP, DP, TP, TN - see article) according to gene signatures and uses markers genes to infer the pseudo-time. Pseudot-time resultats are then compared to Velocyto results (e.g. content of bassins of attractions/emissions).
+
+#### Input
+This step use input from previous analysis. Here is a tree presentation of the content of the folder $WORKING_DIR/data/step8 as it should be before the execution of the analysis.
+
+    step8
+    └── input
+        ├── basins_markers.csv                            # This file must be a copy from $WORKING_DIR/data/step7/output/basins_markers.csv
+        ├── cells_in_basins.tsv                           # This file must be a copy from $WORKING_DIR/data/step7/output/cells_in_basins.csv
+        ├── excluded_cells_contamination.txt              # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_contamination.txt
+        ├── excluded_cells_HighMitoGenePerc.txt           # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_HighMitoGenePerc.txt
+        ├── excluded_cells_LowGeneNb.txt                  # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowGeneNb.txt
+        ├── excluded_cells_LowUMINb.txt                   # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowUMINb.txt
+        ├── excluded_cells_proliferation.txt              # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_proliferation.txt
+        ├── filtered_emat.rds                             # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_emat.rds
+        ├── filtered_nmat.rds                             # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_nmat.rds
+        ├── filtered_normalized_expression_matrix.csv     # this file must be a copy from $WORKING_DIR/data/step1/output/filtered_normalized_expression_matrix.txt
+        ├── filtered_raw_expression_matrix.csv            # this file must be a copy from $WORKING_DIR/data/step1/output/filtered_raw_expression_matrix.txt
+        ├── r_filtered.rds                                # this file must be a copy from $WORKING_DIR/data/step6/output/r_filtered.rds
+        └── rvel.cd.rds                                   # this file must be a copy from $WORKING_DIR/data/step6/output/rvel.cd.rds
+
+#### Output
+This step generate an HTML report of the analysis.
+
+#### Execution
+To execute the analysis, ensure input files are correctly copied into the $WORKING_DIR/data/step8/input folder (see above) and launch the following command:
+
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step8/JPGlab_LysoDC_OctonaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step8/output"), output_file = "JPGlab_LysoDC_OctonaryAnalysis.html", quiet=FALSE)'
 
+#### Results
 
-
+    step8
+    ├── input
+    │   ├── basins_markers.csv                            
+    │   ├── cells_in_basins.tsv                           
+    │   ├── excluded_cells_contamination.txt              
+    │   ├── excluded_cells_HighMitoGenePerc.txt           
+    │   ├── excluded_cells_LowGeneNb.txt                  
+    │   ├── excluded_cells_LowUMINb.txt                   
+    │   ├── excluded_cells_proliferation.txt              
+    │   ├── filtered_emat.rds                             
+    │   ├── filtered_nmat.rds                             
+    │   ├── filtered_normalized_expression_matrix.csv     
+    │   ├── filtered_raw_expression_matrix.csv            
+    │   ├── r_filtered.rds                                
+    │   └── rvel.cd.rds   
+    └── output
+        └── JPGlab_LysoDC_OctonaryAnalysis   # the HTML report of the analysis
