@@ -1,12 +1,28 @@
 # LysoDC
 
 
-THIS WORK IS IN PROGRESS
+## Article
 
+**Title:** Differentiation pathways and migratory ability of monocyte-derived phagocytes in Peyer’s patches
+
+**Authors:** Johnny Bonnardel 1,3,4,&, Clément Da Silva 1,5,&, Camille Wagner 1,&, Lionel Spinelli 1, Cynthia Arroyo Portilla 1, Julie Tomas 1, Margaux Lagier 1, Lionel Chasson 1, Marion Masse 1, Marc Dalod 1, Alexandre Chollat-Namy 2, Jean-Pierre Gorvel 1 and Hugues Lelouard 1
+
+1 Aix Marseille Univ, CNRS, INSERM, CIML, Marseille, France.
+2 Pathological anatomy and cytology laboratory, Marseille, France.
+3 Present address: Department of Biomedical molecular Biology, Ghent University, Ghent, Belgium.
+4 Present address: Laboratory of Myeloid Cell Ontogeny and Functional Specialisation, VIB Center for Inflammation Research, Ghent, Belgium.
+5 Present address: Immunology Section, Lund University, Lund 221 84, Sweden.
+& these authors contributed equally to this work.
+Correspondence: Hugues Lelouard, Centre d'Immunologie de Marseille-Luminy, Marseille, 13288, France. Phone: + 33 4 91 26 94 16; Fax: + 33 4 91 26 94 30; e-mail: lelouard@ciml.univ-mrs.fr
+
+**Abstract:**
+The specialized monocyte-derived phagocytes termed LysoDC are hallmarks of Peyer’s patches where their main function is to sample pathogens. However, their differentiation pathway, their migratory ability as well as their human counterpart remain uncharacterized. From single-cell RNA sequencing, we built LysoDC differentiation trajectories and fate diversity in correlation with their location. One of the LysoDC differentiation subsets is located in the follicle in a CXCR5-independent manner whereas the others reside in the subepithelial dome (SED) and mature as they get closer to the epithelium. Immature subepithelial LysoDC display proliferative activities. Mature subepithelial LysoDC acquire a gene signature shared with conventional DC but do not migrate in the interfollicular regions (IFR) at steady state. However, upon stimulation, they acquire the chemokine receptor CCR7 and migrate from the SED to the IFR where they interact with helper T cells. Finally, we show that a similar population of LysoDC populates human Peyer’s patches. 
+
+## Goal of the github
 This github project contains the instructions and material to reproduce the analysis reported in the article (and more).
-Source code (scripts and dockerfiles) are available in the github repository. Requested data and builded Docker images are available on download. Intructions to reproduce the analysis are provided below.
+Source code (scripts and dockerfiles) are available in the github repository. Required data and builded Docker images are available on download. Intructions to reproduce the analysis are provided below.
 
-To reproduce the analysis, we have to first, prepare the environments (see "Prepare the Environments" section below), then execute the analysis step by step (see "Run the analysis" section below).
+To reproduce the analysis, you have to first, prepare the environments (see "Prepare the Environments" section below), then execute the analysis step by step (see "Run the analysis" section below).
 
 ## Prepare the environments
 
@@ -107,11 +123,11 @@ This step use input from previous analysis. Here is a tree présentation of the 
 
     step5
     └── input
-        ├── excluded_cells_contamination.txt    #(this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_contamination.txt)
-        ├── excluded_cells_HighMitoGenePerc.txt #(this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_HighMitoGenePerc.txt)
-        ├── excluded_cells_LowGeneNb.txt        #(this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowGeneNb.txt)
-        ├── excluded_cells_LowUMINb.txt         #(this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowUMINb.txt)
-        └── excluded_cells_proliferation.txt    #(this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_proliferation.txt)
+        ├── excluded_cells_contamination.txt    # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_contamination.txt
+        ├── excluded_cells_HighMitoGenePerc.txt # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_HighMitoGenePerc.txt
+        ├── excluded_cells_LowGeneNb.txt        # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowGeneNb.txt
+        ├── excluded_cells_LowUMINb.txt         # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowUMINb.txt
+        └── excluded_cells_proliferation.txt    # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_proliferation.txt
 
 #### Output
 This step output a loom file containing the Velocyto analysis of the bam file produced by CellRanger (see above). It also produce a
@@ -162,7 +178,7 @@ Once the analysis done, here is the tree the $WORKING_DIR/data/step5 folder you 
 ### Run step 6
 
 #### Goal
-This step aims to produce a more focus analysis of the RNA velocity. Cells analyzed in the previous step as contamination or not suitale for analysis thanks to the marker genes of the cluster they are part of are eliminated, providing a clearer view of the serached processes. In this step, we concentrate on the velocyto output analysis,
+This step aims to produce a more focus analysis of the RNA velocity. Cells analyzed in the previous step as contamination or not suitable for analysis thanks to the marker genes of the cluster they are part of are eliminated, providing a clearer view of the serached processes. In this step, we concentrate on the velocyto output analysis,
 looking in details at some key genes, trying several combination of Velocyto parameters to make the mapping of relative velocyto of cells on the t-SNE embedding clearer.
 
 #### Input
@@ -184,14 +200,14 @@ This step output a new cluster mapping file, done once cells have been filtered.
 We chose to export the complete R objects of this analysis in order to keep fixed some information that may vary from run to run (for instance t-SNE embedding). Those
 objects will be resued in the next steps as input files.
 
-**Important note:**  In this step the cluster is performed with the pagoda2 package and the _makeKnnGraph_ function (on PCA space) and the _getKnnClusters_ using the 'walktrap' method. This method using a random walk procedure can generate differences when re-running the clustering compare to our run. To allow reproducibility of our results, we provide the cluster/cell assignation table in an output file (see below).   
+**Important note:**  In this step the clustering is performed with the pagoda2 package and the _makeKnnGraph_ function (on PCA space) and the _getKnnClusters_ using the 'walktrap' method. This method using a random walk procedure can generate differences when re-running the clustering compare to our run. To allow reproducibility of our results, we provide the cluster/cell assignation table in an output file (see below). We use the original clustering to remove some cells and the clusters to remove are indicated in the Rmd code src/step6/JPGlab_LysoDC_SenaryAnalysis.Rmd at line 45. If you do not use the orginal clustering, you have to change the cluster number to suit your new clustering.
 
 #### Execution
 To execute the analysis, ensure input files are correctly copied into the $WORKING_DIR/data/step6/input folder (see above) and launch the following command:
 
     docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step6/JPGlab_LysoDC_SenaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step6/output"), output_file = "JPGlab_LysoDC_SenaryAnalysis.html", quiet=FALSE)'
     
-Important note: This step is computationally intensive : the process will, at some steps, use all the available CPU and memory usage may exceed 30GB RAM.
+**Important note:** This step is computationally intensive : the process will, at some steps, use all the available CPU and memory usage may exceed 30GB RAM.
 
 #### Results
 Once the analysis done, here is the tree the WORKING_DIR/data/step6 folder you may obtain (with the newly created "output" folder):
@@ -222,12 +238,13 @@ This step aims at comparing the expression level of key genes and the flows of c
 This study allowed us to define sepcific zone in the t-SNE embedding, called _bassins_, corresponding to zones where the flow of velocities goes out (emission bassin) 
 or goes in (attraction bassin (see article).
 
+**Important note:** The definition of the bassins coordinates is done in the R code, more precisely in the src/step8/analysis_improve_rnavalocity_plot.R at line 114. If you do not use the original t-SNE embedding, you have to change those coordinates to suit the new embedding.
+
 #### Input
 This step use input from previous analysis. Here is a tree presentation of the content of the folder $WORKING_DIR/data/step7 as it should be before the execution of the analysis. Note that the file "cell_cluster_mapping.tsv" is the on from step6 output NOT the one from step5 output.
 
     step7
     └── input
-        ├── cell_cluster_mapping.tsv  # this file must be a copy from $WORKING_DIR/data/step6/output/cell_cluster_mapping.tsv
         ├── filtered_emat.rds         # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_emat.rds
         ├── filtered_nmat.rds         # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_nmat.rds
         ├── r_filtered.rds            # this file must be a copy from $WORKING_DIR/data/step6/output/r_filtered.rds
@@ -246,7 +263,6 @@ Once the analysis done, here is the tree the WORKING_DIR/data/step7 folder you m
 
     step7
     ├── input
-    │   ├── cell_cluster_mapping.tsv  
     │   ├── filtered_emat.rds         
     │   ├── filtered_nmat.rds         
     │   ├── r_filtered.rds            
@@ -268,44 +284,27 @@ This step use input from previous analysis. Here is a tree presentation of the c
 
     step8
     └── input
-        ├── basins_markers.csv                            # This file must be a copy from $WORKING_DIR/data/step7/output/basins_markers.csv
-        ├── cells_in_basins.tsv                           # This file must be a copy from $WORKING_DIR/data/step7/output/cells_in_basins.csv
-        ├── excluded_cells_contamination.txt              # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_contamination.txt
-        ├── excluded_cells_HighMitoGenePerc.txt           # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_HighMitoGenePerc.txt
-        ├── excluded_cells_LowGeneNb.txt                  # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowGeneNb.txt
-        ├── excluded_cells_LowUMINb.txt                   # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_LowUMINb.txt
-        ├── excluded_cells_proliferation.txt              # this file must be a copy from $WORKING_DIR/data/step1/output/excluded_cells_proliferation.txt
-        ├── filtered_emat.rds                             # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_emat.rds
-        ├── filtered_nmat.rds                             # this file must be a copy from $WORKING_DIR/data/step6/output/filtered_nmat.rds
-        ├── filtered_normalized_expression_matrix.csv     # this file must be a copy from $WORKING_DIR/data/step1/output/filtered_normalized_expression_matrix.txt
         ├── filtered_raw_expression_matrix.csv            # this file must be a copy from $WORKING_DIR/data/step1/output/filtered_raw_expression_matrix.txt
-        ├── r_filtered.rds                                # this file must be a copy from $WORKING_DIR/data/step6/output/r_filtered.rds
-        └── rvel.cd.rds                                   # this file must be a copy from $WORKING_DIR/data/step6/output/rvel.cd.rds
+        └── r_filtered.rds                                # this file must be a copy from $WORKING_DIR/data/step6/output/r_filtered.rds
 
 #### Output
-This step generate an HTML report of the analysis.
+This step generate an HTML report of the analysis. It also generates the PDF of the figures of the BEAM analysis (Branched Expression Modeling Analysis) with three list
+of genes: (i) a selection of marker genes used for the Monocle analysis (ii) the TOP50 markers genes and (iii) the top 50 best differentially expressed genes (DEG)
 
 #### Execution
 To execute the analysis, ensure input files are correctly copied into the $WORKING_DIR/data/step8/input folder (see above) and launch the following command:
 
-    docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_rnavelocity R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step8/JPGlab_LysoDC_OctonaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step8/output"), output_file = "JPGlab_LysoDC_OctonaryAnalysis.html", quiet=FALSE)'
+    docker run -v $WORKING_DIR:$WORKING_DIR -e WORKING_DIR=$WORKING_DIR jpglab_lysodc_pseudotime R -e 'WORKING_DIR=Sys.getenv( "WORKING_DIR");rmarkdown::render( input=file.path( WORKING_DIR, "src/step8/JPGlab_LysoDC_OctonaryAnalysis.Rmd"), output_dir = file.path( WORKING_DIR, "data/step8/output"), output_file = "JPGlab_LysoDC_OctonaryAnalysis.html", quiet=FALSE)'
 
 #### Results
+Once the analysis done, here is the tree the WORKING_DIR/data/step8 folder you may obtain (with the newly created "output" folder):
 
     step8
     ├── input
-    │   ├── basins_markers.csv                            
-    │   ├── cells_in_basins.tsv                           
-    │   ├── excluded_cells_contamination.txt              
-    │   ├── excluded_cells_HighMitoGenePerc.txt           
-    │   ├── excluded_cells_LowGeneNb.txt                  
-    │   ├── excluded_cells_LowUMINb.txt                   
-    │   ├── excluded_cells_proliferation.txt              
-    │   ├── filtered_emat.rds                             
-    │   ├── filtered_nmat.rds                             
-    │   ├── filtered_normalized_expression_matrix.csv     
     │   ├── filtered_raw_expression_matrix.csv            
-    │   ├── r_filtered.rds                                
-    │   └── rvel.cd.rds   
+    │   └── r_filtered.rds                                
     └── output
+        ├── BEAM_SelectedMarkers.pdf         # The BEAM result on selected marker genes
+        ├── BEAM_Top50Markers.pdf            # The BEAM result on Top 50 marker genes
+        ├── BEAM_TOP50DEG.pdf                # The BEAM result on TOP 50 DEG genes
         └── JPGlab_LysoDC_OctonaryAnalysis   # the HTML report of the analysis
