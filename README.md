@@ -1,28 +1,40 @@
-# LysoDC
+# Differentiation pathways and migratory ability of monocyte-derived phagocytes in Peyer’s patches
 
 
-## Article
+## Article information
 
 **Title:** Differentiation pathways and migratory ability of monocyte-derived phagocytes in Peyer’s patches
 
 **Authors:** Johnny Bonnardel 1,3,4,&, Clément Da Silva 1,5,&, Camille Wagner 1,&, Lionel Spinelli 1, Cynthia Arroyo Portilla 1, Julie Tomas 1, Margaux Lagier 1, Lionel Chasson 1, Marion Masse 1, Marc Dalod 1, Alexandre Chollat-Namy 2, Jean-Pierre Gorvel 1 and Hugues Lelouard 1
 
 1 Aix Marseille Univ, CNRS, INSERM, CIML, Marseille, France.
+
 2 Pathological anatomy and cytology laboratory, Marseille, France.
+
 3 Present address: Department of Biomedical molecular Biology, Ghent University, Ghent, Belgium.
+
 4 Present address: Laboratory of Myeloid Cell Ontogeny and Functional Specialisation, VIB Center for Inflammation Research, Ghent, Belgium.
+
 5 Present address: Immunology Section, Lund University, Lund 221 84, Sweden.
+
 & these authors contributed equally to this work.
+
 Correspondence: Hugues Lelouard, Centre d'Immunologie de Marseille-Luminy, Marseille, 13288, France. Phone: + 33 4 91 26 94 16; Fax: + 33 4 91 26 94 30; e-mail: lelouard@ciml.univ-mrs.fr
 
 **Abstract:**
 The specialized monocyte-derived phagocytes termed LysoDC are hallmarks of Peyer’s patches where their main function is to sample pathogens. However, their differentiation pathway, their migratory ability as well as their human counterpart remain uncharacterized. From single-cell RNA sequencing, we built LysoDC differentiation trajectories and fate diversity in correlation with their location. One of the LysoDC differentiation subsets is located in the follicle in a CXCR5-independent manner whereas the others reside in the subepithelial dome (SED) and mature as they get closer to the epithelium. Immature subepithelial LysoDC display proliferative activities. Mature subepithelial LysoDC acquire a gene signature shared with conventional DC but do not migrate in the interfollicular regions (IFR) at steady state. However, upon stimulation, they acquire the chemokine receptor CCR7 and migrate from the SED to the IFR where they interact with helper T cells. Finally, we show that a similar population of LysoDC populates human Peyer’s patches. 
+
+---
+---
 
 ## Goal of the github
 This github project contains the instructions and material to reproduce the analysis reported in the article (and more).
 Source code (scripts and dockerfiles) are available in the github repository. Required data and builded Docker images are available on download. Intructions to reproduce the analysis are provided below.
 
 To reproduce the analysis, you have to first, prepare the environments (see "Prepare the Environments" section below), then execute the analysis step by step (see "Run the analysis" section below).
+
+---
+---
 
 ## Prepare the environments
 
