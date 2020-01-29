@@ -1,28 +1,30 @@
-# Differentiation pathways and migratory ability of monocyte-derived phagocytes in Peyer’s patches
+# Differentiation paths of Peyer’s patch LysoDC are linked to sampling site positioning, migration and T cell priming 
 
 
 ## Article information
 
-**Title:** Differentiation pathways and migratory ability of monocyte-derived phagocytes in Peyer’s patches
+**Title:** Differentiation paths of Peyer’s patch LysoDC are linked to sampling site positioning, migration and T cell priming 
 
-**Authors:** Johnny Bonnardel 1,3,4,&, Clément Da Silva 1,5,&, Camille Wagner 1,&, Lionel Spinelli 1, Cynthia Arroyo Portilla 1, Julie Tomas 1, Margaux Lagier 1, Lionel Chasson 1, Marion Masse 1, Marc Dalod 1, Alexandre Chollat-Namy 2, Jean-Pierre Gorvel 1 and Hugues Lelouard 1
+**Authors:** Camille Wagner 1,&, Johnny Bonnardel 1,4,5,&, Clément Da Silva 1,6,&, Lionel Spinelli 1, Cynthia Arroyo Portilla 1,2, Julie Tomas 1, Margaux Lagier 1, Lionel Chasson 1, Marion Masse 1, Marc Dalod 1, Alexandre Chollat-Namy 3, Jean- Pierre Gorvel 1 and Hugues Lelouard 1,*
 
 1 Aix Marseille Univ, CNRS, INSERM, CIML, Marseille, France.
 
-2 Pathological anatomy and cytology laboratory, Marseille, France.
+2 Departamento de Análisis Clínicos, Facultad de Microbiología, Universidad de Costa Rica, San José, Costa Rica.
 
-3 Present address: Department of Biomedical molecular Biology, Ghent University, Ghent, Belgium.
+3 Pathological anatomy and cytology laboratory, Marseille, France.
 
-4 Present address: Laboratory of Myeloid Cell Ontogeny and Functional Specialisation, VIB Center for Inflammation Research, Ghent, Belgium.
+4 Current address: Department of Biomedical molecular Biology, Ghent University, Ghent, Belgium.
 
-5 Present address: Immunology Section, Lund University, Lund 221 84, Sweden.
+5 Current address: Laboratory of Myeloid Cell Ontogeny and Functional Specialisation, VIB Center for Inflammation Research, Ghent, Belgium.
+
+6 Current address: Immunology Section, Lund University, Lund 221 84, Sweden.
 
 & these authors contributed equally to this work.
 
-Correspondence: Hugues Lelouard, Centre d'Immunologie de Marseille-Luminy, Marseille, 13288, France. Phone: + 33 4 91 26 94 16; Fax: + 33 4 91 26 94 30; e-mail: lelouard@ciml.univ-mrs.fr
+* correspondence: Hugues Lelouard, Centre d'Immunologie de Marseille-Luminy, Marseille, 13288, France. Phone: + 33 491269416; Fax: + 33 491269430; e-mail: lelouard@ciml.univ- mrs.fr 
 
 **Abstract:**
-The specialized monocyte-derived phagocytes termed LysoDC are hallmarks of Peyer’s patches where their main function is to sample pathogens. However, their differentiation pathway, their migratory ability as well as their human counterpart remain uncharacterized. From single-cell RNA sequencing, we built LysoDC differentiation trajectories and fate diversity in correlation with their location. One of the LysoDC differentiation subsets is located in the follicle in a CXCR5-independent manner whereas the others reside in the subepithelial dome (SED) and mature as they get closer to the epithelium. Immature subepithelial LysoDC display proliferative activities. Mature subepithelial LysoDC acquire a gene signature shared with conventional DC but do not migrate in the interfollicular regions (IFR) at steady state. However, upon stimulation, they acquire the chemokine receptor CCR7 and migrate from the SED to the IFR where they interact with helper T cells. Finally, we show that a similar population of LysoDC populates human Peyer’s patches. 
+The specialized monocyte-derived phagocytes termed LysoDC are hallmarks of Peyer’s patches where their main function is to sample pathogens. Here, we studied their differentiation pathway in relation with their sampling, migratory and T cell priming abilities. All LysoDC differentiation states display similar phagocytic activity. One of them is located in follicles in a CXCR5-independent manner whereas the others reside in subepithelial domes (SED) and mature as they get closer to the epithelium. Immature LysoDC proliferate. Fully mature LysoDC acquire a gene signature shared with conventional DC and prime naïve T cells in vitro but, at steady state, do not migrate in naïve T cells-enriched interfollicular regions (IFR). However, upon stimulation, they express the chemokine receptor CCR7 and migrate from the SED to the IFR periphery where they strongly interact with proliferative T cells. Finally, we show that LysoDC populate human Peyer’s patches, strengthening their interest as targets for modulating intestinal immunity.
 
 ---
 ---
