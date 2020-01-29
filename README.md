@@ -21,7 +21,7 @@
 
 & these authors contributed equally to this work.
 
-* correspondence: Hugues Lelouard, Centre d'Immunologie de Marseille-Luminy, Marseille, 13288, France. Phone: + 33 491269416; Fax: + 33 491269430; e-mail: lelouard@ciml.univ- mrs.fr 
+\* correspondence: Hugues Lelouard, Centre d'Immunologie de Marseille-Luminy, Marseille, 13288, France. Phone: + 33 491269416; Fax: + 33 491269430; e-mail: lelouard@ciml.univ- mrs.fr 
 
 **Abstract:**
 The specialized monocyte-derived phagocytes termed LysoDC are hallmarks of Peyer’s patches where their main function is to sample pathogens. Here, we studied their differentiation pathway in relation with their sampling, migratory and T cell priming abilities. All LysoDC differentiation states display similar phagocytic activity. One of them is located in follicles in a CXCR5-independent manner whereas the others reside in subepithelial domes (SED) and mature as they get closer to the epithelium. Immature LysoDC proliferate. Fully mature LysoDC acquire a gene signature shared with conventional DC and prime naïve T cells in vitro but, at steady state, do not migrate in naïve T cells-enriched interfollicular regions (IFR). However, upon stimulation, they express the chemokine receptor CCR7 and migrate from the SED to the IFR periphery where they strongly interact with proliferative T cells. Finally, we show that LysoDC populate human Peyer’s patches, strengthening their interest as targets for modulating intestinal immunity.
