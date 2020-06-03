@@ -42,7 +42,8 @@ VELOCYTO_INPUT_DIR = INPUT_DIR
 
 dir.create( OUTPUT_DIR, showWarnings = FALSE)
 
-CLUSTER_TO_REMOVE = c( 6, 7, 9)
+#CLUSTER_TO_REMOVE = c( 6, 7, 9)
+CLUSTER_TO_REMOVE = c( 6, 8, 10)
 ```
 
 [//]: # "Load the various chunks in the various files"
