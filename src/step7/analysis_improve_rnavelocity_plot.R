@@ -63,7 +63,7 @@ show.velocity.on.embedding.cor(emb,
 )
 
 
-# Visualize a fit for maker genes (we reuse rvel.cd to save on calcualtions here):
+# Visualize a fit for maker genes (we reuse rvel.cd to save on calculations here):
 cat("<HR>")
 rgb.palette <- colorRampPalette(c("grey", "red"), space = "rgb")(1000)
 
@@ -110,7 +110,7 @@ extended_embedding = data.frame( emb)
 names( extended_embedding) = c( "X", "Y")
 extended_embedding$color = cell.colors[ row.names( extended_embedding)]
 
-# -- define the corrdinates of the basins of emission and attraction
+# -- define the coordinates of the basins of emission and attraction
 basins = data.frame( xmin = c( -16*20/43,   -16*20/43,  -68*20/43,    -86*20/43,    38*20/43,  -110*20/43),
                       xmax = c( 17*20/43,    0*20/43,    -52*20/43,    -68*20/43,    61*20/43, -92*20/43),
                       ymin = c( -27*20/27,   6*20/27,    0*20/27,      -22*20/27,    6*20/27,  -29*20/27),
