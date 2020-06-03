@@ -103,7 +103,6 @@ row.names( cell_state_df) = cell_state_df$CellType
 cell_state_df = cell_state_df[ , -which( names( cell_state_df) == "CellType")]
 cell_state_df = cell_state_df[ -which( row.names( cell_state_df) == "Unknown"),]
 datatable(  cell_state_df , caption = "Distribution of cell type among pseudotime states")
-d3heatmap( cell_state_df, colors = "Blues", Rowv = FALSE, Colv = FALSE)
 
 # Keep trace of original pseudotime
 pData( filtered_cds_pseudotime_supervised)[ , "original.pseudotime"] = pData( filtered_cds_pseudotime_supervised)[ , "Pseudotime"]

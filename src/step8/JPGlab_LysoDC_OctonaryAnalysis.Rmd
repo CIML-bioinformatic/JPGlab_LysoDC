@@ -29,7 +29,6 @@ library( dplyr)
 library( DT)
 library( grid)
 library( pagoda2)
-library( d3heatmap)
 ```
 
 [//]: # "Define some constants"
