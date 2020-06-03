@@ -24,7 +24,7 @@
 \* correspondence: Hugues Lelouard, Centre d'Immunologie de Marseille-Luminy, Marseille, 13288, France. Phone: + 33 491269416; Fax: + 33 491269430; e-mail: lelouard@ciml.univ- mrs.fr 
 
 **Abstract:**
-The specialized monocyte-derived phagocytes termed LysoDC are hallmarks of Peyer’s patches where their main function is to sample pathogens. Here, we studied their differentiation pathway in relation with their sampling, migratory and T cell priming abilities. All LysoDC differentiation states display similar phagocytic activity. One of them is located in follicles in a CXCR5-independent manner whereas the others reside in subepithelial domes (SED) and mature as they get closer to the epithelium. Immature LysoDC proliferate. Fully mature LysoDC acquire a gene signature shared with conventional DC and prime naïve T cells in vitro but, at steady state, do not migrate in naïve T cells-enriched interfollicular regions (IFR). However, upon stimulation, they express the chemokine receptor CCR7 and migrate from the SED to the IFR periphery where they strongly interact with proliferative T cells. Finally, we show that LysoDC populate human Peyer’s patches, strengthening their interest as targets for modulating intestinal immunity.
+The specialized monocyte-derived phagocytes termed LysoDC are hallmarks of Peyer’s patches where their main function is to sample microrganisms and detect pathogens. Here, we studied their differentiation pathway in relation with their sampling, migratory and T cell priming abilities. Among the four identified LysoDC differentiation stages that display similar phagocytic activity, one is located in follicles in a CXCR5- independent manner whereas the others reside in subepithelial domes (SED) where they proliferate and then mature, as they get closer to the epithelium. Fully mature LysoDC but not macrophages express a set of genes in common with conventional DC, and prime naïve T cells in vitro. However, at steady state, they do not migrate in naïve T cell-enriched interfollicular regions (IFR) but, upon stimulation, they express the chemokine receptor CCR7 and migrate from the SED to the IFR periphery where they strongly interact with proliferative immune cells, including helper T cells. Finally, we show that LysoDC populate human Peyer’s patches, strengthening their interest as targets for modulating intestinal immunity. 
 
 ---
 ---
@@ -255,7 +255,7 @@ or goes in (attraction bassin (see article).
 **Important note:** The definition of the bassins coordinates is done in the R code, more precisely in the src/step8/analysis_improve_rnavalocity_plot.R at line 114. If you do not use the original t-SNE embedding, you have to change those coordinates to suit the new embedding.
 
 #### Input
-This step use input from previous analysis. Here is a tree presentation of the content of the folder $WORKING_DIR/data/step7 as it should be before the execution of the analysis. Note that the file "cell_cluster_mapping.tsv" is the on from step6 output NOT the one from step5 output.
+This step use input from previous analysis. Here is a tree presentation of the content of the folder $WORKING_DIR/data/step7 as it should be before the execution of the analysis.
 
     step7
     └── input
@@ -318,7 +318,7 @@ Once the analysis done, here is the tree the WORKING_DIR/data/step8 folder you m
     │   ├── filtered_raw_expression_matrix.csv            
     │   └── r_filtered.rds                                
     └── output
-        ├── BEAM_SelectedMarkers.pdf         # The BEAM result on selected marker genes
-        ├── BEAM_Top50Markers.pdf            # The BEAM result on Top 50 marker genes
-        ├── BEAM_TOP50DEG.pdf                # The BEAM result on TOP 50 DEG genes
-        └── JPGlab_LysoDC_OctonaryAnalysis   # the HTML report of the analysis
+        ├── BEAM_SelectedMarkers.pdf              # The BEAM result on selected marker genes
+        ├── BEAM_Top50Markers.pdf                 # The BEAM result on Top 50 marker genes
+        ├── BEAM_TOP50DEG.pdf                     # The BEAM result on TOP 50 DEG genes
+        └── JPGlab_LysoDC_OctonaryAnalysis.html   # the HTML report of the analysis
